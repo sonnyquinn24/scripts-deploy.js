@@ -16,7 +16,7 @@
     "ico",
     "deployment"
   ],
-  "author": "",
+  "author": "Sonny Ethan Quinn",
   "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
