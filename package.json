@@ -1,18 +1,25 @@
 {
   "name": "scripts-deploy",
   "version": "1.0.0",
-  "description": "Deployment",
+  "description": "ICO Smart Contract Deployment with automated CI/CD pipeline",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy-with-info.js",
+    "deploy:sepolia": "npx hardhat run scripts/deploy-with-info.js --network sepolia",
+    "deploy:mainnet": "npx hardhat run scripts/deploy-with-info.js --network mainnet",
+    "deploy:polygon": "npx hardhat run scripts/deploy-with-info.js --network polygon",
+    "deploy:bsc": "npx hardhat run scripts/deploy-with-info.js --network bsc",
+    "verify": "npx hardhat verify"
   },
-  "keywords": [],
+  "keywords": ["ico", "ethereum", "smart-contracts", "deployment", "cicd"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@openzeppelin/contracts": "^5.4.0",
-    "hardhat": "^3.0.3"
+    "hardhat": "^2.22.0"
   },
   "type": "module"
 }
