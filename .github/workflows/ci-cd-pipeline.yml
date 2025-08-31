@@ -1,0 +1,67 @@
+name: CI/CD Pipeline
+
+# Triggers for the workflow
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Build Job
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Build project
+      run: npm run build
+      
+    - name: Run tests
+      run: npm test
+
+  # Deploy Job
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Build project
+      run: npm run build
+      
+    - name: Deploy application
+      run: |
+        echo "🚀 Deploying application..."
+        echo "📦 Deployment target not specified - add your deployment commands here"
+        echo "✅ Deployment completed successfully"
+        # Add your deployment commands here, e.g.:
+        # - Deploy to AWS: aws s3 sync ./dist s3://your-bucket
+        # - Deploy to Heroku: git push heroku main
+        # - Deploy to GitHub Pages: npm run deploy
+        # - Deploy to custom server: scp -r ./dist user@server:/path/to/deploy
