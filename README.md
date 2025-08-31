@@ -57,6 +57,8 @@ npm run deploy-de
 npm test
 ```
 
+For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
 ## Testing
 
 The project includes comprehensive unit tests for:
