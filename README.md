@@ -14,9 +14,9 @@ This project contains:
 ### SEQICO Contract
 - Buy SEQ tokens with ETH, USDT, or USDC
 - Configurable pricing for each payment method
-- Owner-only functions for token management and fund withdrawal
+- Owner-only functions for token management, price updates, and fund withdrawal
 - Automatic ETH refunds for overpayments
-- Event logging for all purchases
+- Event logging for all purchases and price updates
 
 ### SEQToken Contract
 - Standard ERC20 token
@@ -51,6 +51,9 @@ npx hardhat run scripts/deploy-DE.js
 - `buyWithUSDT(uint256 tokenAmount)`: Purchase tokens with USDT
 - `buyWithUSDC(uint256 tokenAmount)`: Purchase tokens with USDC
 - `setSEQToken(address _seqToken)`: Update SEQ token address (owner only)
+- `setPricePerTokenETH(uint256 _pricePerTokenETH)`: Update ETH price per token (owner only)
+- `setPricePerTokenUSDT(uint256 _pricePerTokenUSDT)`: Update USDT price per token (owner only)
+- `setPricePerTokenUSDC(uint256 _pricePerTokenUSDC)`: Update USDC price per token (owner only)
 - `withdrawETH(address payable recipient)`: Withdraw collected ETH (owner only)
 - `withdrawERC20(address token, address recipient)`: Withdraw ERC20 tokens (owner only)
 

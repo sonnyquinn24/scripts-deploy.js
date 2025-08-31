@@ -14,6 +14,9 @@ contract SEQICO is Ownable {
     uint256 public pricePerTokenUSDC;
 
     event TokensPurchased(address indexed buyer, uint256 amount, string payment);
+    event PriceUpdatedETH(uint256 newPrice);
+    event PriceUpdatedUSDT(uint256 newPrice);
+    event PriceUpdatedUSDC(uint256 newPrice);
 
     constructor(
         address _seqToken,
@@ -33,6 +36,21 @@ contract SEQICO is Ownable {
 
     function setSEQToken(address _seqToken) external onlyOwner {
         seqToken = IERC20(_seqToken);
+    }
+
+    function setPricePerTokenETH(uint256 _pricePerTokenETH) external onlyOwner {
+        pricePerTokenETH = _pricePerTokenETH;
+        emit PriceUpdatedETH(_pricePerTokenETH);
+    }
+
+    function setPricePerTokenUSDT(uint256 _pricePerTokenUSDT) external onlyOwner {
+        pricePerTokenUSDT = _pricePerTokenUSDT;
+        emit PriceUpdatedUSDT(_pricePerTokenUSDT);
+    }
+
+    function setPricePerTokenUSDC(uint256 _pricePerTokenUSDC) external onlyOwner {
+        pricePerTokenUSDC = _pricePerTokenUSDC;
+        emit PriceUpdatedUSDC(_pricePerTokenUSDC);
     }
 
     function buyWithETH(uint256 tokenAmount) external payable {
