@@ -15,19 +15,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Compile contracts
-      run: npx hardhat compile
+      - name: Compile contracts
+        run: npx hardhat compile
 
   test:
     name: Run Tests
@@ -35,19 +35,19 @@ jobs:
     needs: build # Ensures tests run after build stage
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run tests
-      run: npx hardhat test
+      - name: Run tests
+        run: npx hardhat test
 
   deploy:
     name: Deploy Contracts
@@ -55,19 +55,19 @@ jobs:
     needs: test # Ensures deployment runs after tests pass
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Deploy contracts
-      run: npx hardhat run scripts/deploy.js --network mainnet
-      env:
-        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-        INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
+      - name: Deploy contracts
+        run: npx hardhat run scripts/deploy.js --network mainnet
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
