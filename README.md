@@ -1,5 +1,7 @@
 # SEQ Token Deployment Scripts
 
+A complete Hardhat-based development environment for deploying SEQ Token and ICO contracts with ES module support.
+
 This repository contains smart contracts and deployment scripts for the SEQ Token ecosystem.
 
 ## Contracts
