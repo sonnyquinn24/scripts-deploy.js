@@ -10,11 +10,11 @@ This repository contains smart contracts for SEQICO ICO token sale system with S
 
 1. **Install dependencies** (NEVER CANCEL - wait up to 5 minutes):
    ```bash
-   npm install --legacy-peer-deps
+   npm install --force
    ```
-   - **Time**: ~10-15 seconds normally, up to 5 minutes with network issues
-   - **CRITICAL**: Use `--legacy-peer-deps` flag due to Hardhat toolbox version conflicts
-   - **Backup option**: If the above fails, use `npm install --force`
+   - **Time**: ~8-15 seconds normally, up to 5 minutes with network issues
+   - **CRITICAL**: Use `--force` flag due to Hardhat toolbox version conflicts with newer Hardhat versions
+   - **Alternative**: `npm install --legacy-peer-deps` (may not install all required dependencies)
 
 2. **Compile smart contracts** (NEVER CANCEL - wait up to 3 minutes):
    ```bash
@@ -126,7 +126,9 @@ This repository contains smart contracts for SEQICO ICO token sale system with S
 
 ### Dependency Issues
 - **Problem**: "ERESOLVE could not resolve" errors during npm install
-- **Solution**: Use `npm install --legacy-peer-deps` or `npm install --force`
+- **Solution**: Use `npm install --force` (recommended) or `npm install --legacy-peer-deps`
+- **Problem**: "Plugin @nomicfoundation/hardhat-toolbox requires the following dependencies"
+- **Solution**: Run `npm install --force` to install all required toolbox dependencies
 
 ### Compilation Issues  
 - **Problem**: "require is not defined in ES module scope"
