@@ -5,20 +5,23 @@
   "main": "index.js",
   "scripts": {
     "test": "hardhat test",
-    "compile": "hardhat compile"
+    "compile": "hardhat compile",
+    "verify": "hardhat run scripts/verify-price-validation.js",
+    "debug": "hardhat run scripts/debug-transactions.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@openzeppelin/contracts": "^4.9.3",
-    "hardhat": "^2.19.5",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
     "@nomicfoundation/hardhat-ethers": "^3.0.4",
-    "ethers": "^6.7.1"
+    "@openzeppelin/contracts": "^4.9.3",
+    "chai": "^6.0.1",
+    "ethers": "^6.7.1",
+    "hardhat": "^2.19.5"
   },
   "type": "commonjs",
   "dependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
     "@nomicfoundation/hardhat-ethers": "^4.0.0",
     "@nomicfoundation/hardhat-network-helpers": "^3.0.0",
     "@nomicfoundation/hardhat-verify": "^3.0.0",
@@ -26,7 +29,6 @@
     "@typechain/hardhat": "^9.1.0",
     "@types/chai": "^5.2.2",
     "@types/mocha": "^10.0.10",
-    "chai": "^6.0.1",
     "hardhat-gas-reporter": "^2.3.0",
     "solidity-coverage": "^0.8.16",
     "typechain": "^8.3.2"
