@@ -1,0 +1,15 @@
+{
+  "extends": "solhint:recommended",
+  "rules": {
+    "pragma-solidity": ["error", "^0.8.0"],
+    "quotes": ["error", "double"],
+    "max-line-length": ["error", 120],
+    "bracket-align": "error",
+    "code-complexity": ["error", 8],
+    "compiler-version": ["error", "^0.8.0"],
+    "func-visibility": ["error", {"ignoreConstructors": true}],
+    "no-unused-vars": "error",
+    "no-console": "error",
+    "reason-string": ["warn", {"maxLength": 50}]
+  }
+}
