@@ -9,14 +9,23 @@
     "deploy": "hardhat run scripts/deploy.js",
     "deploy-alt": "hardhat run scripts/deploy-alt.js"
   },
-  "keywords": ["ethereum", "solidity", "erc20", "ico", "deployment"],
+  "keywords": [
+    "ethereum",
+    "solidity",
+    "erc20",
+    "ico",
+    "deployment"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@openzeppelin/contracts": "^5.4.0",
+    "@solidity-parser/parser": "^0.20.2",
     "ethers": "^6.15.0",
-    "hardhat": "^2.26.3"
+    "hardhat": "^2.26.3",
+    "solc": "^0.8.26",
+    "solc-js": "^1.0.1"
   },
-  "type": "commonjs"
+  "type": "module"
 }

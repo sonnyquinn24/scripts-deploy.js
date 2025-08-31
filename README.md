@@ -29,6 +29,8 @@ npm install
 npm run compile
 ```
 
+**Note**: Compilation requires internet access to download Solidity compilers from `binaries.soliditylang.org`. In restricted environments, ensure this domain is accessible or configure your local Solidity compiler.
+
 3. Run tests:
 ```bash
 npm run test
@@ -64,5 +66,10 @@ Update the deployment scripts in `scripts/` directory to modify:
 - **Total Supply**: 500,000 SEQ tokens
 - **Owner Allocation**: 10% (50,000 SEQ)
 - **ICO Allocation**: 90% (450,000 SEQ)
-- **Solidity Version**: ^0.8.20
+- **Solidity Version**: ^0.8.26 (compatible with locally available compiler)
+- **Module System**: ES Modules (type: "module")
 - **License**: MIT
+
+## Development Notes
+
+This project has been configured to work with ES modules and modern Hardhat tooling. All scripts and tests use ES6 import/export syntax instead of CommonJS require/module.exports.
