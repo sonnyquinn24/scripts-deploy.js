@@ -1,0 +1,40 @@
+name: Deploy Smart Contracts
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps
+      
+    - name: Compile contracts
+      run: npx hardhat compile
+      
+    - name: Deploy contracts to network
+      run: npx hardhat run scripts/deploy.js --network ${{ secrets.NETWORK || 'hardhat' }}
+      env:
+        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
+        
+    - name: Upload deployment artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: deployment-artifacts
+        path: |
+          artifacts/
+          cache/

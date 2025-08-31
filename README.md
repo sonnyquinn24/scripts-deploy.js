@@ -1,13 +1,14 @@
 # SEQICO Smart Contract Deployment
 
-A Hardhat project for deploying the SEQICO ICO smart contract and SEQ token.
+A Hardhat project for deploying the SEQICO ICO smart contract and SEQ token with automated GitHub Actions deployment.
 
 ## Overview
 
 This project contains:
 - **SEQICO.sol**: The main ICO contract allowing token purchases with ETH, USDT, and USDC
 - **SEQToken.sol**: The ERC20 token contract
-- **Deployment scripts**: Two deployment scripts with different configurations
+- **Deployment scripts**: Automated deployment scripts with deployer information logging
+- **GitHub Actions**: Automated deployment pipeline triggered on main branch merges
 
 ## Features
 
@@ -23,26 +24,54 @@ This project contains:
 - Initial distribution: 10% to owner, 90% to ICO contract
 - 500,000 total supply
 
+### Automated Deployment
+- GitHub Actions workflow triggers on main branch pushes
+- Automated contract compilation and deployment
+- Secure environment variable handling
+- Deployment artifact uploads
+
 ## Setup
 
 1. Install dependencies:
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
-2. Compile contracts:
+2. Configure environment variables:
 ```bash
-npx hardhat compile
+cp .env.example .env
+# Edit .env with your actual values
 ```
 
-3. Deploy contracts:
+3. Compile contracts:
 ```bash
-# Deploy with main script
-npx hardhat run scripts/deploy.js
-
-# Deploy with alternative script  
-npx hardhat run scripts/deploy-DE.js
+npm run compile
 ```
+
+4. Deploy contracts:
+```bash
+# Deploy to local Hardhat network
+npm run deploy
+
+# Deploy to specific networks
+npm run deploy:sepolia
+npm run deploy:mainnet
+npm run deploy:polygon
+```
+
+## GitHub Actions Deployment
+
+### Required Secrets
+Configure these secrets in your GitHub repository:
+- `PRIVATE_KEY`: Your deployment account's private key
+- `INFURA_API_KEY`: Your Infura project API key
+- `NETWORK`: Target network (hardhat, mainnet, sepolia, polygon)
+
+### Workflow Trigger
+The deployment workflow automatically triggers when:
+- Code is pushed to the `main` branch
+- All contracts are compiled and deployed to the specified network
+- Deployment artifacts are uploaded for review
 
 ## Contract Functions
 
