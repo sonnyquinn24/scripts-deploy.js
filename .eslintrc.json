@@ -1,0 +1,55 @@
+{
+  "env": {
+    "es2022": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "plugins": ["jsdoc"],
+  "ignorePatterns": ["docs/", "node_modules/", "artifacts/", "cache/"],
+  "rules": {
+    "camelcase": ["error", {
+      "properties": "always",
+      "ignoreDestructuring": false,
+      "ignoreImports": false,
+      "ignoreGlobals": false,
+      "allow": [
+        "^[A-Z][A-Za-z0-9]*$",
+        "^[A-Z_][A-Z0-9_]*$"
+      ]
+    }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-console": "off",
+    "prefer-const": "error",
+    "no-var": "error",
+    "eqeqeq": "error",
+    "curly": "error",
+    "require-await": "error",
+    "no-return-await": "error",
+    "jsdoc/require-jsdoc": ["error", {
+      "require": {
+        "FunctionDeclaration": true,
+        "MethodDefinition": false,
+        "ClassDeclaration": true,
+        "ArrowFunctionExpression": false,
+        "FunctionExpression": false
+      }
+    }],
+    "jsdoc/require-description": "error",
+    "jsdoc/require-param-description": "error",
+    "jsdoc/require-returns-description": "error"
+  },
+  "overrides": [
+    {
+      "files": ["scripts/**/*.js"],
+      "rules": {
+        "jsdoc/require-jsdoc": "off"
+      }
+    }
+  ]
+}

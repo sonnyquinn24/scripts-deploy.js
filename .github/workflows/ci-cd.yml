@@ -10,64 +10,217 @@ on:
   workflow_dispatch: # Allows you to manually trigger the workflow
 
 jobs:
-  build:
-    name: Build Contracts
+  lint:
+    name: Code Quality Checks
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 18
+        cache: 'npm'
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci --legacy-peer-deps
+
+    - name: Run ESLint
+      run: npm run lint
+
+    - name: Check for required environment files
+      run: |
+        if [ ! -f .env.example ]; then
+          echo "❌ .env.example file is missing"
+          exit 1
+        fi
+        echo "✅ .env.example file exists"
+
+  build:
+    name: Build Contracts
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci --legacy-peer-deps
 
     - name: Compile contracts
-      run: npx hardhat compile
+      run: npm run compile
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled-contracts
+        path: artifacts/
 
   test:
     name: Run Tests
     runs-on: ubuntu-latest
-    needs: build # Ensures tests run after build stage
+    needs: build
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 18
+        cache: 'npm'
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci --legacy-peer-deps
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: compiled-contracts
+        path: artifacts/
 
     - name: Run tests
-      run: npx hardhat test
+      run: npm run test
 
-  deploy:
-    name: Deploy Contracts
+  validate-deployment-scripts:
+    name: Validate Deployment Scripts
     runs-on: ubuntu-latest
-    needs: test # Ensures deployment runs after tests pass
+    needs: build
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 18
+        cache: 'npm'
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci --legacy-peer-deps
 
-    - name: Deploy contracts
-      run: npx hardhat run scripts/deploy.js --network mainnet
-      env:
-        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-        INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
+    - name: Check deployment scripts exist
+      run: |
+        if [ ! -f scripts/deploy-development.js ]; then
+          echo "❌ Development deployment script missing"
+          exit 1
+        fi
+        if [ ! -f scripts/deploy-production.js ]; then
+          echo "❌ Production deployment script missing"
+          exit 1
+        fi
+        echo "✅ All deployment scripts present"
+
+    - name: Validate environment variables in scripts
+      run: |
+        if ! grep -q "validateEnvironmentVariables" scripts/deploy-development.js; then
+          echo "❌ Development script missing environment validation"
+          exit 1
+        fi
+        if ! grep -q "validateEnvironmentVariables" scripts/deploy-production.js; then
+          echo "❌ Production script missing environment validation"
+          exit 1
+        fi
+        echo "✅ Environment validation present in deployment scripts"
+
+    - name: Test deployment script syntax
+      run: |
+        node -c scripts/deploy-development.js
+        node -c scripts/deploy-production.js
+        echo "✅ Deployment scripts have valid syntax"
+
+  generate-docs:
+    name: Generate Documentation
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: [lint, build, test]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci --legacy-peer-deps
+
+    - name: Generate documentation
+      run: npm run docs
+
+    - name: Upload documentation
+      uses: actions/upload-artifact@v4
+      with:
+        name: generated-docs
+        path: docs/
+
+  dry-run-deployment:
+    name: Dry Run Deployment
+    runs-on: ubuntu-latest
+    needs: [validate-deployment-scripts]
+    if: github.event_name == 'pull_request'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci --legacy-peer-deps
+
+    - name: Create test environment file
+      run: |
+        cp .env.example .env
+        echo "✅ Test environment file created"
+
+    - name: Validate environment configuration
+      run: |
+        node -e "
+          require('dotenv').config();
+          const requiredVars = [
+            'OWNER_ADDRESS', 'USDT_ADDRESS', 'USDC_ADDRESS',
+            'PRICE_PER_TOKEN_ETH', 'PRICE_PER_TOKEN_USDT', 'PRICE_PER_TOKEN_USDC',
+            'TOTAL_SUPPLY'
+          ];
+          const missingVars = requiredVars.filter(v => !process.env[v]);
+          if (missingVars.length > 0) {
+            console.log('❌ Missing required environment variables:', missingVars.join(', '));
+            process.exit(1);
+          }
+          console.log('✅ All required environment variables present');
+        "
+
+    - name: Test deployment script imports
+      run: |
+        node -e "
+          async function test() {
+            try {
+              const dev = await import('./scripts/deploy-development.js');
+              const prod = await import('./scripts/deploy-production.js');
+              console.log('✅ Deployment scripts import successfully');
+            } catch (error) {
+              console.log('❌ Script import failed:', error.message);
+              process.exit(1);
+            }
+          }
+          test();
+        "

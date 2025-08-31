@@ -23,6 +23,15 @@ yarn-error.log*
 cache/
 artifacts/
 
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+
+# Generated documentation
+docs/
+
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.

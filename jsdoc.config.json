@@ -1,0 +1,20 @@
+{
+  "source": {
+    "include": ["./scripts/", "./README.md"],
+    "includePattern": "\\.(js|ts)$",
+    "exclude": ["node_modules/"]
+  },
+  "opts": {
+    "destination": "./docs/",
+    "recurse": true,
+    "readme": "./README.md"
+  },
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  },
+  "metadata": {
+    "title": "SEQICO Smart Contract Deployment Documentation"
+  }
+}

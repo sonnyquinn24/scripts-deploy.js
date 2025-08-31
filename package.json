@@ -1,18 +1,35 @@
 {
   "name": "scripts-deploy",
   "version": "1.0.0",
-  "description": "Deployment",
+  "description": "Smart contract deployment scripts with automated configuration",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/config-validation.cjs",
+    "compile": "npx hardhat compile",
+    "deploy:dev": "cross-env NODE_ENV=development npx hardhat run scripts/deploy-development.js",
+    "deploy:prod": "cross-env NODE_ENV=production npx hardhat run scripts/deploy-production.js",
+    "lint": "eslint . --ext .js,.ts",
+    "lint:fix": "eslint . --ext .js,.ts --fix",
+    "docs": "jsdoc -c jsdoc.config.json",
+    "prepare": "husky install"
   },
-  "keywords": [],
+  "keywords": ["blockchain", "smart-contracts", "deployment", "hardhat"],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
     "@openzeppelin/contracts": "^5.4.0",
-    "hardhat": "^3.0.3"
+    "hardhat": "^2.22.15",
+    "eslint": "^8.57.0",
+    "@eslint/js": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsdoc": "^46.10.1",
+    "husky": "^8.0.3",
+    "cross-env": "^7.0.3",
+    "jsdoc": "^4.0.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
   },
   "type": "module"
 }
