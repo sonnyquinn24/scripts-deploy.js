@@ -22,7 +22,7 @@ contract SEQICO is Ownable {
         uint256 _pricePerTokenETH,
         uint256 _pricePerTokenUSDT,
         uint256 _pricePerTokenUSDC
-    ) {
+    ) Ownable(msg.sender) {
         seqToken = IERC20(_seqToken);
         usdt = IERC20(_usdt);
         usdc = IERC20(_usdc);

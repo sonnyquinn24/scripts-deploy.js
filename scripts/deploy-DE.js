@@ -1,4 +1,4 @@
-import { ethers } from "hardhat";
+const { ethers } = require("hardhat");
 
 async function main() {
   // Addresses
@@ -7,7 +7,7 @@ async function main() {
   const usdcAddress = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"; // Your USDC wallet
 
   // Prices (customize if needed)
-  const pricePerTokenETH = ethers.parseEther("0.01"); // 0.01 ETH per SEQ
+  const pricePerTokenETH = ethers.utils.parseEther("0.01"); // 0.01 ETH per SEQ
   const pricePerTokenUSDT = 10_000_000; // 10 USDT (6 decimals)
   const pricePerTokenUSDC = 10_000_000; // 10 USDC (6 decimals)
 
@@ -22,16 +22,16 @@ async function main() {
     pricePerTokenUSDT,
     pricePerTokenUSDC
   );
-  await seqICO.waitForDeployment();
-  const ICO = await seqICO.getAddress();
+  await seqICO.deployed();
+  const ICO = seqICO.address;
   console.log("SEQICO deployed to:", ICO);
 
   // 2. Deploy SEQToken with 10% to owner, 90% to ICO contract
-  const totalSupply = ethers.parseEther("500000");
+  const totalSupply = ethers.utils.parseEther("500000");
   const SEQToken = await ethers.getContractFactory("SEQToken");
   const seqToken = await SEQToken.deploy(totalSupply, OWNER, ICO);
-  await seqToken.waitForDeployment();
-  const seqTokenAddress = await seqToken.getAddress();
+  await seqToken.deployed();
+  const seqTokenAddress = seqToken.address;
   console.log("SEQToken deployed to:", seqTokenAddress);
 
   // 3. Update ICO contract with real SEQ token address
@@ -41,8 +41,8 @@ async function main() {
   // 4. (Optional) Print balances for verification
   const ownerBal = await seqToken.balanceOf(OWNER);
   const icoBal = await seqToken.balanceOf(ICO);
-  console.log("Owner balance:", ethers.formatEther(ownerBal));
-  console.log("ICO balance:", ethers.formatEther(icoBal));
+  console.log("Owner balance:", ethers.utils.formatEther(ownerBal));
+  console.log("ICO balance:", ethers.utils.formatEther(icoBal));
 }
 
 main().catch((error) => {
