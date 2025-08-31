@@ -52,6 +52,15 @@ async function main() {
   const icoBal = await seqToken.balanceOf(ICO);
   console.log("Owner balance:", ethers.formatEther(ownerBal));
   console.log("ICO balance:", ethers.formatEther(icoBal));
+
+  // 5. Save deployment summary
+  console.log("\n=== Deployment Summary ===");
+  console.log("Deployer:", deployer.address);
+  console.log("SEQICO Contract:", ICO);
+  console.log("SEQToken Contract:", seqTokenAddress);
+  console.log("Network:", (await ethers.provider.getNetwork()).name);
+  console.log("Chain ID:", (await ethers.provider.getNetwork()).chainId);
+  console.log("=========================");
 }
 
 main().catch((error) => {

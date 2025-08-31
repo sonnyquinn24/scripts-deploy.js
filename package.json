@@ -9,7 +9,11 @@
     "deploy": "npx hardhat run scripts/deploy.js",
     "deploy:mainnet": "npx hardhat run scripts/deploy.js --network mainnet",
     "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
-    "deploy:polygon": "npx hardhat run scripts/deploy.js --network polygon"
+    "deploy:polygon": "npx hardhat run scripts/deploy.js --network polygon",
+    "verify": "npx hardhat run scripts/verify-deployment.js",
+    "verify:mainnet": "npx hardhat run scripts/verify-deployment.js --network mainnet",
+    "verify:sepolia": "npx hardhat run scripts/verify-deployment.js --network sepolia",
+    "verify:polygon": "npx hardhat run scripts/verify-deployment.js --network polygon"
   },
   "keywords": [],
   "author": "",
