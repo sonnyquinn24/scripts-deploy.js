@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract SEQICO is Ownable {
+contract SeqIco is Ownable {
     IERC20 public seqToken;
     IERC20 public usdt;
     IERC20 public usdc;
@@ -22,7 +22,7 @@ contract SEQICO is Ownable {
         uint256 _pricePerTokenETH,
         uint256 _pricePerTokenUSDT,
         uint256 _pricePerTokenUSDC
-    ) {
+    ) Ownable(msg.sender) {
         seqToken = IERC20(_seqToken);
         usdt = IERC20(_usdt);
         usdc = IERC20(_usdc);
@@ -31,7 +31,7 @@ contract SEQICO is Ownable {
         pricePerTokenUSDC = _pricePerTokenUSDC;
     }
 
-    function setSEQToken(address _seqToken) external onlyOwner {
+    function setSeqToken(address _seqToken) external onlyOwner {
         seqToken = IERC20(_seqToken);
     }
 

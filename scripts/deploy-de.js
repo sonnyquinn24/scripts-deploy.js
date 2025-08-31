@@ -1,4 +1,5 @@
-import { ethers } from "hardhat";
+import hre from "hardhat";
+const { ethers } = hre;
 
 async function main() {
   // Addresses
@@ -12,9 +13,9 @@ async function main() {
   const pricePerTokenUSDC = 10_000_000; // 10 USDC (6 decimals)
 
   // 1. Deploy ICO contract first (dummy token address for now)
-  const SEQICO = await ethers.getContractFactory("SEQICO");
+  const SeqIco = await ethers.getContractFactory("SeqIco");
   const dummyToken = "0x0000000000000000000000000000000000000000";
-  const seqICO = await SEQICO.deploy(
+  const seqIco = await SeqIco.deploy(
     dummyToken,
     usdtAddress,
     usdcAddress,
@@ -22,25 +23,25 @@ async function main() {
     pricePerTokenUSDT,
     pricePerTokenUSDC
   );
-  await seqICO.waitForDeployment();
-  const ICO = await seqICO.getAddress();
-  console.log("SEQICO deployed to:", ICO);
+  await seqIco.waitForDeployment();
+  const ICO_ADDRESS = await seqIco.getAddress();
+  console.log("SeqIco deployed to:", ICO_ADDRESS);
 
   // 2. Deploy SEQToken with 10% to owner, 90% to ICO contract
   const totalSupply = ethers.parseEther("500000");
-  const SEQToken = await ethers.getContractFactory("SEQToken");
-  const seqToken = await SEQToken.deploy(totalSupply, OWNER, ICO);
+  const SeqToken = await ethers.getContractFactory("SeqToken");
+  const seqToken = await SeqToken.deploy(totalSupply, OWNER, ICO_ADDRESS);
   await seqToken.waitForDeployment();
   const seqTokenAddress = await seqToken.getAddress();
-  console.log("SEQToken deployed to:", seqTokenAddress);
+  console.log("SeqToken deployed to:", seqTokenAddress);
 
   // 3. Update ICO contract with real SEQ token address
-  await seqICO.setSEQToken(seqTokenAddress);
-  console.log("SEQICO updated with SEQ token address");
+  await seqIco.setSeqToken(seqTokenAddress);
+  console.log("SeqIco updated with SEQ token address");
 
   // 4. (Optional) Print balances for verification
   const ownerBal = await seqToken.balanceOf(OWNER);
-  const icoBal = await seqToken.balanceOf(ICO);
+  const icoBal = await seqToken.balanceOf(ICO_ADDRESS);
   console.log("Owner balance:", ethers.formatEther(ownerBal));
   console.log("ICO balance:", ethers.formatEther(icoBal));
 }
