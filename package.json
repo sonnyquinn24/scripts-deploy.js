@@ -1,14 +1,19 @@
 {
   "name": "scripts-deploy",
   "version": "1.0.0",
-  "description": "Deployment",
+  "description": "ICO Smart Contract Deployment with automated CI/CD pipeline",
   "main": "index.js",
   "scripts": {
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
-    "deploy": "npx hardhat run scripts/deploy.js"
+    "deploy": "npx hardhat run scripts/deploy-with-info.js",
+    "deploy:sepolia": "npx hardhat run scripts/deploy-with-info.js --network sepolia",
+    "deploy:mainnet": "npx hardhat run scripts/deploy-with-info.js --network mainnet",
+    "deploy:polygon": "npx hardhat run scripts/deploy-with-info.js --network polygon",
+    "deploy:bsc": "npx hardhat run scripts/deploy-with-info.js --network bsc",
+    "verify": "npx hardhat verify"
   },
-  "keywords": [],
+  "keywords": ["ico", "ethereum", "smart-contracts", "deployment", "cicd"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
