@@ -5,6 +5,7 @@ A Hardhat project for deploying the SEQICO ICO smart contract and SEQ token.
 ## Overview
 
 This project contains:
+
 - **SEQICO.sol**: The main ICO contract allowing token purchases with ETH, USDT, and USDC
 - **SEQToken.sol**: The ERC20 token contract
 - **Deployment scripts**: Two deployment scripts with different configurations
@@ -12,6 +13,7 @@ This project contains:
 ## Features
 
 ### SEQICO Contract
+
 - Buy SEQ tokens with ETH, USDT, or USDC
 - Configurable pricing for each payment method
 - Owner-only functions for token management and fund withdrawal
@@ -19,6 +21,7 @@ This project contains:
 - Event logging for all purchases
 
 ### SEQToken Contract
+
 - Standard ERC20 token
 - Initial distribution: 10% to owner, 90% to ICO contract
 - 500,000 total supply
@@ -26,27 +29,31 @@ This project contains:
 ## Setup
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Compile contracts:
+
 ```bash
 npx hardhat compile
 ```
 
 3. Deploy contracts:
+
 ```bash
 # Deploy with main script
 npx hardhat run scripts/deploy.js
 
-# Deploy with alternative script  
+# Deploy with alternative script
 npx hardhat run scripts/deploy-DE.js
 ```
 
 ## Contract Functions
 
 ### SEQICO Contract
+
 - `buyWithETH(uint256 tokenAmount)`: Purchase tokens with ETH
 - `buyWithUSDT(uint256 tokenAmount)`: Purchase tokens with USDT
 - `buyWithUSDC(uint256 tokenAmount)`: Purchase tokens with USDC
@@ -57,6 +64,7 @@ npx hardhat run scripts/deploy-DE.js
 ## Configuration
 
 The deployment scripts include configurable parameters:
+
 - Owner address
 - USDT/USDC contract addresses
 - Token pricing for ETH, USDT, and USDC
