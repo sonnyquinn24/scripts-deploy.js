@@ -1,6 +1,14 @@
 import { ethers } from "hardhat";
 
 async function main() {
+  // Get deployer account
+  const [deployer] = await ethers.getSigners();
+  console.log("Deploying contracts with the account:", deployer.address);
+  
+  // Log deployer balance
+  const deployerBalance = await ethers.provider.getBalance(deployer.address);
+  console.log("Deployer account balance:", ethers.formatEther(deployerBalance), "ETH");
+
   // Replace with your actual owner address
   const OWNER = "0x4B958C04701616A0ffF821E9b2db130983c5f3E4";
   // USDT and USDC contract addresses (ensure these are correct for your network)
