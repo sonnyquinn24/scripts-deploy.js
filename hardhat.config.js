@@ -1,5 +1,5 @@
-require("@nomicfoundation/hardhat-ethers");
-require("@nomicfoundation/hardhat-chai-matchers");
+import "@nomicfoundation/hardhat-ethers";
+import "@nomicfoundation/hardhat-chai-matchers";
 
 /** @type import('hardhat/config').HardhatUserConfig */
 const config = {
@@ -32,4 +32,4 @@ const config = {
   },
 };
 
-module.exports = config;
+export default config;

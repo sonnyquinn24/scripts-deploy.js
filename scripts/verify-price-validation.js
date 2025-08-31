@@ -1,4 +1,5 @@
-const { ethers } = require("hardhat");
+import pkg from "hardhat";
+const { ethers } = pkg;
 
 /**
  * Script to verify the correct implementation of price-setting functions

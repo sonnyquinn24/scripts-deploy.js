@@ -1,4 +1,5 @@
-const { ethers } = require("hardhat");
+import pkg from "hardhat";
+const { ethers } = pkg;
 
 /**
  * Debug tool for analyzing SEQICO transactions and identifying errors
