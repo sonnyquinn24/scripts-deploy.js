@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "scripts-deploy": {
+      "command": "node",
+      "args": ["/path/to/scripts-deploy.js/mcp-server.js"],
+      "cwd": "/path/to/scripts-deploy.js"
+    }
+  }
+}

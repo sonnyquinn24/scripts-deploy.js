@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "scripts-deploy": {
+      "command": "node",
+      "args": ["mcp-server.js"],
+      "env": {}
+    }
+  }
+}

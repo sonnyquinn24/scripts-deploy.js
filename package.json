@@ -1,18 +1,27 @@
 {
   "name": "scripts-deploy",
   "version": "1.0.0",
-  "description": "Deployment",
+  "description": "Deployment with MCP server support",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mcp-server": "node mcp-server.js"
   },
-  "keywords": [],
+  "keywords": [
+    "blockchain",
+    "smart-contracts",
+    "mcp",
+    "deployment"
+  ],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.4"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@openzeppelin/contracts": "^5.4.0",
-    "hardhat": "^3.0.3"
+    "hardhat": "^2.26.0"
   },
   "type": "module"
 }
