@@ -7,10 +7,10 @@ async function main() {
   const usdtAddress = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT mainnet
   const usdcAddress = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"; // Example USDC
 
-  // Prices (customize as needed)
-  const pricePerTokenETH = ethers.parseEther("0.01"); // 0.01 ETH per SEQ
-  const pricePerTokenUSDT = 10_000_000; // 10 USDT (6 decimals)
-  const pricePerTokenUSDC = 10_000_000; // 10 USDC (6 decimals)
+  // Prices (customize as needed) - Ensuring $3 minimum price validation
+  const pricePerTokenETH = ethers.parseEther("0.001"); // 0.001 ETH per SEQ (~$2-3 depending on ETH price)
+  const pricePerTokenUSDT = 3_000_000; // $3 USDT (6 decimals) - minimum allowed
+  const pricePerTokenUSDC = 3_000_000; // $3 USDC (6 decimals) - minimum allowed
 
   // 1. Deploy ICO contract first (use a dummy token address initially)
   const SEQICO = await ethers.getContractFactory("SEQICO");

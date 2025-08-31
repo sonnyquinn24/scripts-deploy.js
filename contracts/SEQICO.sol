@@ -13,7 +13,11 @@ contract SEQICO is Ownable {
     uint256 public pricePerTokenUSDT;
     uint256 public pricePerTokenUSDC;
 
+    // Minimum price validation - $3 USD equivalent
+    uint256 public constant MINIMUM_USD_PRICE = 3_000_000; // $3 with 6 decimals
+
     event TokensPurchased(address indexed buyer, uint256 amount, string payment);
+    event PriceUpdated(string currency, uint256 newPrice);
 
     constructor(
         address _seqToken,
@@ -26,6 +30,11 @@ contract SEQICO is Ownable {
         seqToken = IERC20(_seqToken);
         usdt = IERC20(_usdt);
         usdc = IERC20(_usdc);
+        
+        // Validate minimum $3 USD price for USDT and USDC (direct USD pricing)
+        require(_pricePerTokenUSDT >= MINIMUM_USD_PRICE, "USDT price must be at least $3");
+        require(_pricePerTokenUSDC >= MINIMUM_USD_PRICE, "USDC price must be at least $3");
+        
         pricePerTokenETH = _pricePerTokenETH;
         pricePerTokenUSDT = _pricePerTokenUSDT;
         pricePerTokenUSDC = _pricePerTokenUSDC;
@@ -33,6 +42,24 @@ contract SEQICO is Ownable {
 
     function setSEQToken(address _seqToken) external onlyOwner {
         seqToken = IERC20(_seqToken);
+    }
+
+    // Price update functions with minimum price validation
+    function updatePriceETH(uint256 _pricePerTokenETH) external onlyOwner {
+        pricePerTokenETH = _pricePerTokenETH;
+        emit PriceUpdated("ETH", _pricePerTokenETH);
+    }
+
+    function updatePriceUSDT(uint256 _pricePerTokenUSDT) external onlyOwner {
+        require(_pricePerTokenUSDT >= MINIMUM_USD_PRICE, "USDT price must be at least $3");
+        pricePerTokenUSDT = _pricePerTokenUSDT;
+        emit PriceUpdated("USDT", _pricePerTokenUSDT);
+    }
+
+    function updatePriceUSDC(uint256 _pricePerTokenUSDC) external onlyOwner {
+        require(_pricePerTokenUSDC >= MINIMUM_USD_PRICE, "USDC price must be at least $3");
+        pricePerTokenUSDC = _pricePerTokenUSDC;
+        emit PriceUpdated("USDC", _pricePerTokenUSDC);
     }
 
     function buyWithETH(uint256 tokenAmount) external payable {
