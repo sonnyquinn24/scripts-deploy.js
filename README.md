@@ -13,10 +13,14 @@ This project contains:
 
 ### SEQICO Contract
 - Buy SEQ tokens with ETH, USDT, or USDC
-- Configurable pricing for each payment method
+- Configurable pricing for each payment method with **$3 minimum price floor**
 - Owner-only functions for token management and fund withdrawal
 - Automatic ETH refunds for overpayments
 - Event logging for all purchases
+- **Price validation**: All token prices must be ≥ $3 equivalent:
+  - ETH: minimum 3 ether (3 × 10¹⁸ wei)
+  - USDT: minimum 3,000,000 (3 × 10⁶, accounting for 6 decimals)
+  - USDC: minimum 3,000,000 (3 × 10⁶, accounting for 6 decimals)
 
 ### SEQToken Contract
 - Standard ERC20 token
@@ -50,17 +54,36 @@ npx hardhat run scripts/deploy-DE.js
 - `buyWithETH(uint256 tokenAmount)`: Purchase tokens with ETH
 - `buyWithUSDT(uint256 tokenAmount)`: Purchase tokens with USDT
 - `buyWithUSDC(uint256 tokenAmount)`: Purchase tokens with USDC
+- `setPricePerTokenETH(uint256 _pricePerTokenETH)`: Set ETH price per token (owner only, ≥ 3 ETH)
+- `setPricePerTokenUSDT(uint256 _pricePerTokenUSDT)`: Set USDT price per token (owner only, ≥ 3,000,000)
+- `setPricePerTokenUSDC(uint256 _pricePerTokenUSDC)`: Set USDC price per token (owner only, ≥ 3,000,000)
 - `setSEQToken(address _seqToken)`: Update SEQ token address (owner only)
 - `withdrawETH(address payable recipient)`: Withdraw collected ETH (owner only)
 - `withdrawERC20(address token, address recipient)`: Withdraw ERC20 tokens (owner only)
+
+## Price Floor Policy
+
+The SEQICO contract enforces a **minimum price of $3** for SEQ tokens across all supported payment methods:
+
+- **ETH**: Minimum 3 ether (3,000,000,000,000,000,000 wei)
+- **USDT**: Minimum 3,000,000 (equivalent to $3 with 6 decimals)
+- **USDC**: Minimum 3,000,000 (equivalent to $3 with 6 decimals)
+
+This validation is applied in:
+- Contract deployment (constructor)
+- All price setter functions (`setPricePerTokenETH`, `setPricePerTokenUSDT`, `setPricePerTokenUSDC`)
+
+Any attempt to set a price below these minimums will result in a transaction revert with the message: **"Price must be greater than or equal to $3"**
 
 ## Configuration
 
 The deployment scripts include configurable parameters:
 - Owner address
 - USDT/USDC contract addresses
-- Token pricing for ETH, USDT, and USDC
+- Token pricing for ETH, USDT, and USDC (must meet $3 minimum requirement)
 - Total supply (500,000 SEQ tokens)
+
+**Note**: When deploying, ensure all price parameters meet the minimum $3 equivalent requirement, or the deployment will fail.
 
 ## License
 

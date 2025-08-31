@@ -22,7 +22,11 @@ contract SEQICO is Ownable {
         uint256 _pricePerTokenETH,
         uint256 _pricePerTokenUSDT,
         uint256 _pricePerTokenUSDC
-    ) {
+    ) Ownable(msg.sender) {
+        require(_pricePerTokenETH >= 3 ether, "Price must be greater than or equal to $3");
+        require(_pricePerTokenUSDT >= 3 * 10**6, "Price must be greater than or equal to $3");
+        require(_pricePerTokenUSDC >= 3 * 10**6, "Price must be greater than or equal to $3");
+        
         seqToken = IERC20(_seqToken);
         usdt = IERC20(_usdt);
         usdc = IERC20(_usdc);
@@ -33,6 +37,21 @@ contract SEQICO is Ownable {
 
     function setSEQToken(address _seqToken) external onlyOwner {
         seqToken = IERC20(_seqToken);
+    }
+
+    function setPricePerTokenETH(uint256 _pricePerTokenETH) external onlyOwner {
+        require(_pricePerTokenETH >= 3 ether, "Price must be greater than or equal to $3");
+        pricePerTokenETH = _pricePerTokenETH;
+    }
+
+    function setPricePerTokenUSDT(uint256 _pricePerTokenUSDT) external onlyOwner {
+        require(_pricePerTokenUSDT >= 3 * 10**6, "Price must be greater than or equal to $3");
+        pricePerTokenUSDT = _pricePerTokenUSDT;
+    }
+
+    function setPricePerTokenUSDC(uint256 _pricePerTokenUSDC) external onlyOwner {
+        require(_pricePerTokenUSDC >= 3 * 10**6, "Price must be greater than or equal to $3");
+        pricePerTokenUSDC = _pricePerTokenUSDC;
     }
 
     function buyWithETH(uint256 tokenAmount) external payable {
