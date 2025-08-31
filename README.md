@@ -13,14 +13,14 @@ This project contains:
 
 ### SEQICO Contract
 - Buy SEQ tokens with ETH, USDT, or USDC
-- Configurable pricing for each payment method with **$3 minimum price floor**
+- Configurable pricing for each payment method with **minimum price validation**
 - Owner-only functions for token management and fund withdrawal
 - Automatic ETH refunds for overpayments
 - Event logging for all purchases
-- **Price validation**: All token prices must be ≥ $3 equivalent:
+- **Price validation**: Minimum price requirements enforced:
   - ETH: minimum 3 ether (3 × 10¹⁸ wei)
-  - USDT: minimum 3,000,000 (3 × 10⁶, accounting for 6 decimals)
-  - USDC: minimum 3,000,000 (3 × 10⁶, accounting for 6 decimals)
+  - USDT: minimum 3,000,000 units (equivalent to $3 with 6 decimals)
+  - USDC: minimum 3,000,000 units (equivalent to $3 with 6 decimals)
 
 ### SEQToken Contract
 - Standard ERC20 token
@@ -61,13 +61,13 @@ npx hardhat run scripts/deploy-DE.js
 - `withdrawETH(address payable recipient)`: Withdraw collected ETH (owner only)
 - `withdrawERC20(address token, address recipient)`: Withdraw ERC20 tokens (owner only)
 
-## Price Floor Policy
+## Price Validation Policy
 
-The SEQICO contract enforces a **minimum price of $3** for SEQ tokens across all supported payment methods:
+The SEQICO contract enforces minimum price requirements for SEQ tokens across all supported payment methods:
 
 - **ETH**: Minimum 3 ether (3,000,000,000,000,000,000 wei)
-- **USDT**: Minimum 3,000,000 (equivalent to $3 with 6 decimals)
-- **USDC**: Minimum 3,000,000 (equivalent to $3 with 6 decimals)
+- **USDT**: Minimum 3,000,000 units (equivalent to $3 with 6 decimals)
+- **USDC**: Minimum 3,000,000 units (equivalent to $3 with 6 decimals)
 
 This validation is applied in:
 - Contract deployment (constructor)
@@ -80,10 +80,10 @@ Any attempt to set a price below these minimums will result in a transaction rev
 The deployment scripts include configurable parameters:
 - Owner address
 - USDT/USDC contract addresses
-- Token pricing for ETH, USDT, and USDC (must meet $3 minimum requirement)
+- Token pricing for ETH, USDT, and USDC (must meet minimum validation requirements)
 - Total supply (500,000 SEQ tokens)
 
-**Note**: When deploying, ensure all price parameters meet the minimum $3 equivalent requirement, or the deployment will fail.
+**Note**: When deploying, ensure all price parameters meet the minimum validation requirements, or the deployment will fail.
 
 ## License
 
