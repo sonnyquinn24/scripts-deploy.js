@@ -62,6 +62,26 @@ The deployment scripts include configurable parameters:
 - Token pricing for ETH, USDT, and USDC
 - Total supply (500,000 SEQ tokens)
 
+## Branch Protection & CI/CD
+
+This repository includes automated GitHub Actions workflows for:
+- **Code quality checks**: ESLint for JavaScript, Solhint for Solidity
+- **Unit testing**: Comprehensive test suite with Mocha and Chai
+- **Security scanning**: Dependency audits and secret detection
+- **Build verification**: Contract compilation and script validation
+
+See [docs/BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md) for details on the automated quality checks and branch protection rules.
+
+## Development Workflow
+
+Before submitting pull requests, run local checks:
+```bash
+npm test          # Run unit tests
+npm run lint      # Check JavaScript code quality
+npm run lint:sol  # Check Solidity best practices
+npm run compile   # Verify contract compilation
+```
+
 ## License
 
 MIT

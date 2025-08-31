@@ -4,15 +4,25 @@
   "description": "Deployment",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/*.js",
+    "lint": "eslint scripts/ --ext .js",
+    "lint:sol": "solhint 'contracts/**/*.sol'",
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.js",
+    "deploy:de": "hardhat run scripts/deploy-DE.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.34.0",
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@openzeppelin/contracts": "^5.4.0",
-    "hardhat": "^3.0.3"
+    "chai": "^6.0.1",
+    "eslint": "^9.34.0",
+    "hardhat": "^3.0.3",
+    "mocha": "^11.7.1",
+    "solhint": "^6.0.1"
   },
   "type": "module"
 }
