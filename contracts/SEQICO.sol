@@ -22,7 +22,7 @@ contract SEQICO is Ownable {
         uint256 _pricePerTokenETH,
         uint256 _pricePerTokenUSDT,
         uint256 _pricePerTokenUSDC
-    ) {
+    ) Ownable(msg.sender) {
         require(_pricePerTokenETH >= 3 ether, "Price must be greater than or equal to $3");
         require(_pricePerTokenUSDT >= 3 * 10**6, "Price must be greater than or equal to $3");
         require(_pricePerTokenUSDC >= 3 * 10**6, "Price must be greater than or equal to $3");
