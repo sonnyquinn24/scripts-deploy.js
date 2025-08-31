@@ -7,8 +7,8 @@ async function main() {
   const usdtAddress = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT mainnet
   const usdcAddress = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"; // Example USDC
 
-  // Prices (customize as needed)
-  const pricePerTokenETH = ethers.parseEther("0.01"); // 0.01 ETH per SEQ
+  // Prices (must meet $3 minimum requirement)
+  const pricePerTokenETH = ethers.parseEther("3"); // 3 ETH per SEQ (minimum allowed)
   const pricePerTokenUSDT = 10_000_000; // 10 USDT (6 decimals)
   const pricePerTokenUSDC = 10_000_000; // 10 USDC (6 decimals)
 
