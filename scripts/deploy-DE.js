@@ -1,3 +1,4 @@
+// TODO: review this file for improvements
 import { ethers } from "hardhat";
 
 async function main() {
