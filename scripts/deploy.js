@@ -5,7 +5,7 @@ async function main() {
   const OWNER = "0x4B958C04701616A0ffF821E9b2db130983c5f3E4";
   // USDT and USDC contract addresses (ensure these are correct for your network)
   const usdtAddress = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT mainnet
-  const usdcAddress = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"; // Example USDC
+  const usdcAddress = "0xC217804689327649D4Fd89C9a269395084728BEF"; // USDC contract address
 
   // Prices (customize as needed)
   const pricePerTokenETH = ethers.parseEther("0.01"); // 0.01 ETH per SEQ
