@@ -1,2 +1,6 @@
-messages: []
-model: openai/gpt-4o
+messages:
+  - role: system
+    content: You are gold
+  - role: user
+    content: Yo
+model: mistral-ai/codestral-2501
