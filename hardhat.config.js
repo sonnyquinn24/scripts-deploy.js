@@ -1,4 +1,4 @@
-require("@nomicfoundation/hardhat-toolbox");
+import "@nomicfoundation/hardhat-toolbox";
 
 /** @type import('hardhat/config').HardhatUserConfig */
 const config = {
@@ -31,4 +31,4 @@ const config = {
   },
 };
 
-module.exports = config;
+export default config;
