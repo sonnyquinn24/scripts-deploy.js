@@ -1,15 +1,15 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  // Configuration - update these addresses with your deployed contracts
-  const SEQICO_ADDRESS = "YOUR_DEPLOYED_SEQICO_ADDRESS_HERE"; // <-- Replace with your deployed SEQICO address
+  // Configuration - set SEQICO_ADDRESS as an environment variable before running this script
+  const SEQICO_ADDRESS = process.env.SEQICO_ADDRESS;
   if (
     !SEQICO_ADDRESS ||
     SEQICO_ADDRESS === "YOUR_DEPLOYED_SEQICO_ADDRESS_HERE" ||
     SEQICO_ADDRESS === "0x..." ||
     !/^0x[a-fA-F0-9]{40}$/.test(SEQICO_ADDRESS)
   ) {
-    throw new Error("❌ Please set SEQICO_ADDRESS to your deployed SEQICO contract address before running this script.");
+    throw new Error("❌ Please set the SEQICO_ADDRESS environment variable to your deployed SEQICO contract address before running this script.\nExample: SEQICO_ADDRESS=0x1234... npx hardhat run scripts/set-prices.js");
   }
   
   // New prices to set (must be >= $3 minimum)
