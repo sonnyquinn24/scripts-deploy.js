@@ -223,7 +223,7 @@ describe("SEQICO", function () {
       // Test ETH purchase with new price
       const tokenAmount = ethers.parseEther("10");
       // Fixed calculation as suggested in the review: use variables instead of hardcoded values
-      const requiredETH = newETHPrice * tokenAmount / ethers.parseEther('1'); // 10 tokens * 0.005 ETH = 0.05 ETH
+      const requiredETH = (newETHPrice * tokenAmount) / ethers.parseEther('1'); // 10 tokens * 0.005 ETH = 0.05 ETH
       
       await expect(seqICO.connect(buyer).buyWithETH(tokenAmount, { value: requiredETH }))
         .to.emit(seqICO, "TokensPurchased")
