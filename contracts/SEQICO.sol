@@ -14,6 +14,11 @@ contract SEQICO is Ownable {
     uint256 public pricePerTokenUSDC;
 
     event TokensPurchased(address indexed buyer, uint256 amount, string payment);
+    event PriceUpdated(string indexed paymentMethod, uint256 newPrice);
+
+    // Minimum price constants (representing $3 minimum)
+    uint256 public constant MIN_PRICE_USD_STABLECOINS = 3_000_000; // $3 with 6 decimals
+    uint256 public constant MIN_PRICE_ETH = 0.001 ether; // 0.001 ETH minimum (assuming ETH > $3000)
 
     constructor(
         address _seqToken,
@@ -26,6 +31,12 @@ contract SEQICO is Ownable {
         seqToken = IERC20(_seqToken);
         usdt = IERC20(_usdt);
         usdc = IERC20(_usdc);
+        
+        // Validate minimum prices
+        require(_pricePerTokenETH >= MIN_PRICE_ETH, "ETH price below $3 minimum");
+        require(_pricePerTokenUSDT >= MIN_PRICE_USD_STABLECOINS, "USDT price below $3 minimum");
+        require(_pricePerTokenUSDC >= MIN_PRICE_USD_STABLECOINS, "USDC price below $3 minimum");
+        
         pricePerTokenETH = _pricePerTokenETH;
         pricePerTokenUSDT = _pricePerTokenUSDT;
         pricePerTokenUSDC = _pricePerTokenUSDC;
@@ -33,6 +44,36 @@ contract SEQICO is Ownable {
 
     function setSEQToken(address _seqToken) external onlyOwner {
         seqToken = IERC20(_seqToken);
+    }
+
+    /**
+     * @dev Set the price per token for ETH purchases
+     * @param _pricePerTokenETH New price in wei per token (must be >= $3 minimum)
+     */
+    function setPriceETH(uint256 _pricePerTokenETH) external onlyOwner {
+        require(_pricePerTokenETH >= MIN_PRICE_ETH, "ETH price below $3 minimum");
+        pricePerTokenETH = _pricePerTokenETH;
+        emit PriceUpdated("ETH", _pricePerTokenETH);
+    }
+
+    /**
+     * @dev Set the price per token for USDT purchases
+     * @param _pricePerTokenUSDT New price with 6 decimals (must be >= $3)
+     */
+    function setPriceUSDT(uint256 _pricePerTokenUSDT) external onlyOwner {
+        require(_pricePerTokenUSDT >= MIN_PRICE_USD_STABLECOINS, "USDT price below $3 minimum");
+        pricePerTokenUSDT = _pricePerTokenUSDT;
+        emit PriceUpdated("USDT", _pricePerTokenUSDT);
+    }
+
+    /**
+     * @dev Set the price per token for USDC purchases
+     * @param _pricePerTokenUSDC New price with 6 decimals (must be >= $3)
+     */
+    function setPriceUSDC(uint256 _pricePerTokenUSDC) external onlyOwner {
+        require(_pricePerTokenUSDC >= MIN_PRICE_USD_STABLECOINS, "USDC price below $3 minimum");
+        pricePerTokenUSDC = _pricePerTokenUSDC;
+        emit PriceUpdated("USDC", _pricePerTokenUSDC);
     }
 
     function buyWithETH(uint256 tokenAmount) external payable {
