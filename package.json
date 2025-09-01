@@ -14,5 +14,9 @@
     "@openzeppelin/contracts": "^5.4.0",
     "hardhat": "^3.0.3"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "solc": "^0.8.30"
+  }
 }
