@@ -4,15 +4,21 @@
   "description": "Deployment",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "verify": "npx hardhat run scripts/verify-price-validation.js",
+    "debug": "npx hardhat run scripts/debug-transactions.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
-    "@openzeppelin/contracts": "^5.4.0",
-    "hardhat": "^3.0.3"
-  },
-  "type": "module"
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@openzeppelin/contracts": "^4.9.3",
+    "chai": "^4.5.0",
+    "ethers": "^6.7.1",
+    "hardhat": "^2.19.5"
+  }
 }

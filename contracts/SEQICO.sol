@@ -13,6 +13,10 @@ contract SEQICO is Ownable {
     uint256 public pricePerTokenUSDT;
     uint256 public pricePerTokenUSDC;
 
+    // Minimum price constants (equivalent to $3 USD)
+    uint256 public constant MIN_PRICE_USD = 3 * 1e6; // $3 in 6 decimal format (USDT/USDC)
+    uint256 public constant MIN_PRICE_ETH = 0.001 ether; // Conservative minimum (~$3 when ETH > $3000)
+
     event TokensPurchased(address indexed buyer, uint256 amount, string payment);
 
     constructor(
@@ -26,6 +30,12 @@ contract SEQICO is Ownable {
         seqToken = IERC20(_seqToken);
         usdt = IERC20(_usdt);
         usdc = IERC20(_usdc);
+        
+        // Validate minimum prices during deployment
+        require(_pricePerTokenETH >= MIN_PRICE_ETH, "Price must be greater than or equal to $3");
+        require(_pricePerTokenUSDT >= MIN_PRICE_USD, "Price must be greater than or equal to $3");
+        require(_pricePerTokenUSDC >= MIN_PRICE_USD, "Price must be greater than or equal to $3");
+        
         pricePerTokenETH = _pricePerTokenETH;
         pricePerTokenUSDT = _pricePerTokenUSDT;
         pricePerTokenUSDC = _pricePerTokenUSDC;
@@ -35,9 +45,24 @@ contract SEQICO is Ownable {
         seqToken = IERC20(_seqToken);
     }
 
+    function setPricePerTokenETH(uint256 _pricePerTokenETH) external onlyOwner {
+        require(_pricePerTokenETH >= MIN_PRICE_ETH, "Price must be greater than or equal to $3");
+        pricePerTokenETH = _pricePerTokenETH;
+    }
+
+    function setPricePerTokenUSDT(uint256 _pricePerTokenUSDT) external onlyOwner {
+        require(_pricePerTokenUSDT >= MIN_PRICE_USD, "Price must be greater than or equal to $3");
+        pricePerTokenUSDT = _pricePerTokenUSDT;
+    }
+
+    function setPricePerTokenUSDC(uint256 _pricePerTokenUSDC) external onlyOwner {
+        require(_pricePerTokenUSDC >= MIN_PRICE_USD, "Price must be greater than or equal to $3");
+        pricePerTokenUSDC = _pricePerTokenUSDC;
+    }
+
     function buyWithETH(uint256 tokenAmount) external payable {
         require(tokenAmount > 0, "Amount must be greater than 0");
-        uint256 requiredETH = pricePerTokenETH * tokenAmount;
+        uint256 requiredETH = pricePerTokenETH * tokenAmount / 1e18; // Properly account for token decimals
         require(msg.value >= requiredETH, "Insufficient ETH sent");
         require(seqToken.balanceOf(address(this)) >= tokenAmount, "Not enough SEQ tokens");
 
