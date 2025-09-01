@@ -4,15 +4,19 @@
   "description": "Deployment",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/pin-github-actions.test.js",
+    "pin-actions": "node scripts/pin-github-actions.js",
+    "pin-actions-dry": "node scripts/pin-github-actions.js --dry-run --verbose"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@octokit/rest": "^22.0.0",
     "@openzeppelin/contracts": "^5.4.0",
-    "hardhat": "^3.0.3"
+    "hardhat": "^3.0.3",
+    "js-yaml": "^4.1.0"
   },
   "type": "module"
 }
