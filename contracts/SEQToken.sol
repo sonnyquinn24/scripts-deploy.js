@@ -9,7 +9,7 @@ contract SEQToken is ERC20, Ownable {
         uint256 totalSupply,
         address owner,
         address icoContract
-    ) ERC20("SEQ Token", "SEQ") {
+    ) ERC20("SEQ Token", "SEQ") Ownable(owner) {
         // Mint 10% to owner, 90% to ICO contract
         uint256 ownerAmount = (totalSupply * 10) / 100;
         uint256 icoAmount = totalSupply - ownerAmount;
