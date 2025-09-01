@@ -1,7 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox");
 
 /** @type import('hardhat/config').HardhatUserConfig */
-const config = {
+module.exports = {
   solidity: "0.8.24",
   networks: {
     hardhat: {},
@@ -30,5 +30,3 @@ const config = {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
 };
-
-module.exports = config;

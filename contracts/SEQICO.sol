@@ -22,7 +22,7 @@ contract SEQICO is Ownable {
         uint256 _pricePerTokenETH,
         uint256 _pricePerTokenUSDT,
         uint256 _pricePerTokenUSDC
-    ) {
+    ) Ownable(msg.sender) {
         seqToken = IERC20(_seqToken);
         usdt = IERC20(_usdt);
         usdc = IERC20(_usdc);
@@ -35,9 +35,21 @@ contract SEQICO is Ownable {
         seqToken = IERC20(_seqToken);
     }
 
+    function updatePriceETH(uint256 _pricePerTokenETH) external onlyOwner {
+        pricePerTokenETH = _pricePerTokenETH;
+    }
+
+    function updatePriceUSDT(uint256 _pricePerTokenUSDT) external onlyOwner {
+        pricePerTokenUSDT = _pricePerTokenUSDT;
+    }
+
+    function updatePriceUSDC(uint256 _pricePerTokenUSDC) external onlyOwner {
+        pricePerTokenUSDC = _pricePerTokenUSDC;
+    }
+
     function buyWithETH(uint256 tokenAmount) external payable {
         require(tokenAmount > 0, "Amount must be greater than 0");
-        uint256 requiredETH = pricePerTokenETH * tokenAmount;
+        uint256 requiredETH = pricePerTokenETH * tokenAmount / 1e18;
         require(msg.value >= requiredETH, "Insufficient ETH sent");
         require(seqToken.balanceOf(address(this)) >= tokenAmount, "Not enough SEQ tokens");
 
