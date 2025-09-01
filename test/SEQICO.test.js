@@ -59,7 +59,7 @@ describe("SEQICO Integration Tests", function () {
       await seqICO.connect(owner).updatePriceETH(newETHPrice);
 
       const tokenAmount = ethers.parseEther("100"); // 100 SEQ tokens
-      const requiredETH = newETHPrice * tokenAmount / ethers.parseEther('1');
+      const requiredETH = (newETHPrice * tokenAmount) / ethers.parseEther('1');
 
       // Buyer purchases tokens with updated price
       await expect(
