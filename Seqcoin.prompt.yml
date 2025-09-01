@@ -2,5 +2,5 @@ messages:
   - role: system
     content: You are gold
   - role: user
-    content: Yo
+    content: I need you to fix all my errors in my repositories
 model: mistral-ai/codestral-2501
