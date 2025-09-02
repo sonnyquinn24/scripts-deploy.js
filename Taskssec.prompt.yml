@@ -1,0 +1,6 @@
+messages:
+  - role: system
+    content: 'You are awesome '
+  - role: user
+    content: I need you to complete my tasks and errors
+model: mistral-ai/codestral-2501
