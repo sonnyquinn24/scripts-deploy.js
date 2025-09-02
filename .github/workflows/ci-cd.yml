@@ -16,10 +16,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@5e2a0b03c4b5edb8c0b96e2cc127b8b9c7a36a5c
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@f5f7a6b5d3c5edb8c2d96e2cc127b8c9d3b25a5e
       with:
         node-version: 18
 
@@ -36,10 +36,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@5e2a0b03c4b5edb8c0b96e2cc127b8b9c7a36a5c
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@f5f7a6b5d3c5edb8c2d96e2cc127b8c9d3b25a5e
       with:
         node-version: 18
 
@@ -56,10 +56,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@5e2a0b03c4b5edb8c0b96e2cc127b8b9c7a36a5c
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@f5f7a6b5d3c5edb8c2d96e2cc127b8c9d3b25a5e
       with:
         node-version: 18
 
