@@ -1,0 +1,8 @@
+messages:
+  - role: system
+    content: |
+      Add APIsec scan workflow for security testing #1
+  - role: user
+    content: |
+      Add APIsec scan workflow for security testing #1
+model: openai/gpt-4o
