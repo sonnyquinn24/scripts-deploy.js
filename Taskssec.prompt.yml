@@ -2,5 +2,13 @@ messages:
   - role: system
     content: 'You are awesome '
   - role: user
-    content: I need you to complete my tasks and errors
+    content: |
+      I need you to complete my tasks and errors
+  - role: assistant
+    content: 'You’re awesome '
+  - role: user
+    content: >-
+      Error: The actions actions/checkout@v3 and actions/setup-node@v3 are not
+      allowed in sonnyquinn24/scripts-deploy.js because all actions must be
+      pinned to a full-length commit SHA.
 model: mistral-ai/codestral-2501
