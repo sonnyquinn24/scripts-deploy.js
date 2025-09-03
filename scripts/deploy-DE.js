@@ -6,10 +6,24 @@ async function main() {
   const usdtAddress = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT mainnet
   const usdcAddress = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"; // Your USDC wallet
 
-  // Prices (customize if needed - must meet $3 minimum requirement)
-  const pricePerTokenETH = ethers.parseEther("0.01"); // 0.01 ETH per SEQ
-  const pricePerTokenUSDT = 10_000_000; // 10 USDT (6 decimals) = $10
-  const pricePerTokenUSDC = 10_000_000; // 10 USDC (6 decimals) = $10
+  // Dynamic price generation function
+  function generatePrice(basePrice, variance = 0.1) {
+    const randomFactor = 1 + (Math.random() - 0.5) * 2 * variance;
+    return Math.floor(basePrice * randomFactor);
+  }
+
+  // Generate dynamic prices or use environment variables (must meet $3 minimum requirement)
+  const pricePerTokenETH = process.env.PRICE_ETH ? 
+    ethers.parseEther(process.env.PRICE_ETH) : 
+    ethers.parseEther("0.01"); // 0.01 ETH per SEQ
+  
+  const pricePerTokenUSDT = process.env.PRICE_USDT ? 
+    parseInt(process.env.PRICE_USDT) : 
+    generatePrice(10_000_000, 0.2); // Generate price around $10 with 20% variance
+  
+  const pricePerTokenUSDC = process.env.PRICE_USDC ? 
+    parseInt(process.env.PRICE_USDC) : 
+    generatePrice(10_000_000, 0.2); // Generate price around $10 with 20% variance
 
   // Minimum price constants for reference
   const MIN_PRICE_ETH = ethers.parseEther("0.001"); // 0.001 ETH minimum

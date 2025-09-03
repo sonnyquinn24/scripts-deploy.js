@@ -22,6 +22,14 @@ const config = {
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
   },
+  // Price configuration for deployment scripts  
+  priceConfig: {
+    defaultPriceETH: "0.01",
+    defaultPriceUSDT: 10_000_000,
+    defaultPriceUSDC: 10_000_000,
+    minPriceETH: "0.001",
+    minPriceUSDStable: 3_000_000
+  }
 };
 
 export default config;
