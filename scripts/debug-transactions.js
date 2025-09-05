@@ -9,12 +9,12 @@ async function main() {
   console.log("🔍 SEQICO Transaction Debugger");
   console.log("===============================");
 
-  const seqicoAddress = process.env.SEQICO_ADDRESS || "0x...";
+  const seqicoAddress = process.env.SEQICO_ADDRESS;
   const txHash = process.env.TX_HASH;
   
-  if (seqicoAddress === "0x...") {
+  if (!seqicoAddress) {
     console.log("❌ Please set SEQICO_ADDRESS environment variable");
-    console.log("Usage: SEQICO_ADDRESS=0x... TX_HASH=0x... npx hardhat run scripts/debug-transactions.js");
+    console.log("Usage: SEQICO_ADDRESS=<contract_address> TX_HASH=<tx_hash> npx hardhat run scripts/debug-transactions.js");
     return;
   }
 
