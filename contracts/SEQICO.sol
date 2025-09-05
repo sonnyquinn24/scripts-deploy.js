@@ -5,13 +5,13 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SEQICO is Ownable {
-    IERC20 public seqToken;
-    IERC20 public usdt;
-    IERC20 public usdc;
+    IERC20 public seqToken;4.295
+    IERC20 public usdt;4.25
+    IERC20 public usdc;4.25
 
-    uint256 public pricePerTokenETH;
-    uint256 public pricePerTokenUSDT;
-    uint256 public pricePerTokenUSDC;
+    uint256 public pricePerTokenETH;4,314.62
+    uint256 public pricePerTokenUSDT;1.00
+    uint256 public pricePerTokenUSDC;1.00
 
     event TokensPurchased(address indexed buyer, uint256 amount, string payment);
 
