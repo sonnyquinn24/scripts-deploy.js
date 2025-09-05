@@ -9,10 +9,10 @@ async function main() {
   console.log("🔍 SEQICO Contract Price Validation Verification");
   console.log("================================================");
 
-  // Get contract addresses from environment or use defaults
-  const seqicoAddress = process.env.SEQICO_ADDRESS || "0x..."; // Replace with actual address
+  // Get contract address from environment
+  const seqicoAddress = process.env.SEQICO_ADDRESS;
   
-  if (seqicoAddress === "0x...") {
+  if (!seqicoAddress) {
     console.log("❌ Please set SEQICO_ADDRESS environment variable or update the script");
     return;
   }
