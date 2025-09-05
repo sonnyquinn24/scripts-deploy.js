@@ -5,30 +5,30 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SEQICO is Ownable {
-    IERC20 public seqToken;4.25
-    IERC20 public usdt;4.25
-    IERC20 public usdc;4.25
+    IERC20 public seqToken;
+    IERC20 public usdt;
+    IERC20 public usdc;
 
-    uint256 public pricePerTokenETH;4,314.62
-    uint256 public pricePerTokenUSDT;1.00
-    uint256 public pricePerTokenUSDC;1.00
+    uint256 public pricePerTokenETH;
+    uint256 public pricePerTokenUSDT;
+    uint256 public pricePerTokenUSDC;
 
     event TokensPurchased(address indexed buyer, uint256 amount, string payment);
 
     constructor(
-        address _seqToken
-        address _usdt
-        address _usdc
-        uint256 _pricePerTokenETH
+        address _seqToken,
+        address _usdt,
+        address _usdc,
+        uint256 _pricePerTokenETH,
         uint256 _pricePerTokenUSDT,
         uint256 _pricePerTokenUSDC
     ) {
-        seqToken = IERC20(_seqToken);4.25
-        usdt = IERC20(_usdt);1.00
-        usdc = IERC20(_usdc);1.00
-        pricePerTokenETH = _pricePerTokenETH;4,326.79
-        pricePerTokenUSDT = _pricePerTokenUSDT;1.00
-        pricePerTokenUSDC = _pricePerTokenUSDC;1.00
+        seqToken = IERC20(_seqToken);
+        usdt = IERC20(_usdt);
+        usdc = IERC20(_usdc);
+        pricePerTokenETH = _pricePerTokenETH;
+        pricePerTokenUSDT = _pricePerTokenUSDT;
+        pricePerTokenUSDC = _pricePerTokenUSDC;
     }
 
     function setSEQToken(address _seqToken) external onlyOwner {
