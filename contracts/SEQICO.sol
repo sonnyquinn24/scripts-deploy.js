@@ -9,8 +9,16 @@ contract SEQICO is Ownable {
     IERC20 public usdt;
     IERC20 public usdc;
 
+    // Price per token in wei (ETH has 18 decimals)
+    // Example: 0.00189 ETH per token (approximately $3.79 at $2000/ETH)
     uint256 public pricePerTokenETH;
+    
+    // Price per token in USDT units (USDT has 6 decimals)
+    // Example: 3790000 = 3.79 USDT per token
     uint256 public pricePerTokenUSDT;
+    
+    // Price per token in USDC units (USDC has 6 decimals)
+    // Example: 3790000 = 3.79 USDC per token
     uint256 public pricePerTokenUSDC;
 
     event TokensPurchased(address indexed buyer, uint256 amount, string payment);
@@ -37,6 +45,8 @@ contract SEQICO is Ownable {
 
     function buyWithETH(uint256 tokenAmount) external payable {
         require(tokenAmount > 0, "Amount must be greater than 0");
+        // Calculate required ETH: price per token * number of tokens / 1e18
+        // Division by 1e18 converts from wei units to prevent overflow
         uint256 requiredETH = pricePerTokenETH * tokenAmount / 1e18;
         require(msg.value >= requiredETH, "Insufficient ETH sent");
         require(seqToken.balanceOf(address(this)) >= tokenAmount, "Not enough SEQ tokens");
@@ -53,6 +63,7 @@ contract SEQICO is Ownable {
 
     function buyWithUSDT(uint256 tokenAmount) external {
         require(tokenAmount > 0, "Amount must be greater than 0");
+        // Calculate required USDT: price per token * number of tokens / 1e18
         uint256 requiredUSDT = pricePerTokenUSDT * tokenAmount / 1e18;
         require(seqToken.balanceOf(address(this)) >= tokenAmount, "Not enough SEQ tokens");
         require(usdt.allowance(msg.sender, address(this)) >= requiredUSDT, "Approve USDT first");
@@ -65,6 +76,7 @@ contract SEQICO is Ownable {
 
     function buyWithUSDC(uint256 tokenAmount) external {
         require(tokenAmount > 0, "Amount must be greater than 0");
+        // Calculate required USDC: price per token * number of tokens / 1e18
         uint256 requiredUSDC = pricePerTokenUSDC * tokenAmount / 1e18;
         require(seqToken.balanceOf(address(this)) >= tokenAmount, "Not enough SEQ tokens");
         require(usdc.allowance(msg.sender, address(this)) >= requiredUSDC, "Approve USDC first");
