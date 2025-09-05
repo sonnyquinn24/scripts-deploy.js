@@ -1,3 +1,4 @@
+// TODO: review this file for improvements
 import "@nomicfoundation/hardhat-ethers";
 
 /** @type import('hardhat/config').HardhatUserConfig */
