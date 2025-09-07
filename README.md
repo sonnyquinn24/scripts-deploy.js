@@ -1,3 +1,4 @@
+<!-- TODO: review this file for improvements -->
 # SEQICO Smart Contract Deployment
 
 A Hardhat project for deploying the SEQICO ICO smart contract and SEQ token.
