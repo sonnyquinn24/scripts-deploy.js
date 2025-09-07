@@ -7,7 +7,7 @@ A Hardhat project for deploying the SEQICO ICO smart contract and SEQ token.
 This project contains:
 - **SEQICO.sol**: The main ICO contract allowing token purchases with ETH, USDT, and USDC
 - **SEQToken.sol**: The ERC20 token contract
-- **Deployment scripts**: Two deployment scripts with different configurations
+- **Deployment scripts**: Two deployment scripts for different environments
 
 ## Features
 
@@ -37,11 +37,11 @@ npx hardhat compile
 
 3. Deploy contracts:
 ```bash
-# Deploy with main script
+# Deploy with main production script
 npx hardhat run scripts/deploy.js
 
-# Deploy with alternative script  
-npx hardhat run scripts/deploy-DE.js
+# Deploy with development configuration
+npx hardhat run scripts/deploy-development.js
 ```
 
 ## Contract Functions
@@ -53,6 +53,20 @@ npx hardhat run scripts/deploy-DE.js
 - `setSEQToken(address _seqToken)`: Update SEQ token address (owner only)
 - `withdrawETH(address payable recipient)`: Withdraw collected ETH (owner only)
 - `withdrawERC20(address token, address recipient)`: Withdraw ERC20 tokens (owner only)
+
+## Deployment Scripts
+
+### scripts/deploy.js
+Main production deployment script with standardized configuration for mainnet deployment.
+
+### scripts/deploy-development.js  
+Development deployment script for testing and development environments.
+
+Both scripts follow consistent naming conventions:
+- `SCREAMING_SNAKE_CASE` for constants
+- `camelCase` for variables and contract instances
+- `PascalCase` for contract factories
+- Descriptive variable names for clarity
 
 ## Configuration
 
