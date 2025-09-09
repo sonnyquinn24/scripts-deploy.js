@@ -1,7 +1,8 @@
 // Example values for SEQICO contract deployment
 // Token price: $3.79 USD per SEQ token
 
-import { ethers } from "hardhat";
+import hre from "hardhat";
+const { ethers } = hre;
 
 // Example price values for a $3.79 token
 async function calculatePriceValues() {

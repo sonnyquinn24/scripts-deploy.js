@@ -1,4 +1,5 @@
-import { ethers } from "hardhat";
+import hre from "hardhat";
+const { ethers } = hre;
 
 describe("SEQICO - Code Review Fix", function () {
   let seqico;
