@@ -13,7 +13,7 @@ describe("SEQICO - Code Review Fix", function () {
 
     // Deploy SEQ Token first
     const SEQToken = await ethers.getContractFactory("SEQToken");
-    const totalSupply = ethers.parseEther("1000000");
+    const totalSupply = ethers.parseEther("750000");
     
     // Deploy SEQICO contract
     const SEQICO = await ethers.getContractFactory("SEQICO");

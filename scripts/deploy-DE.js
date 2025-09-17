@@ -27,7 +27,7 @@ async function main() {
   console.log("SEQICO deployed to:", ICO);
 
   // 2. Deploy SEQToken with 10% to owner, 90% to ICO contract
-  const totalSupply = ethers.parseEther("500000");
+  const totalSupply = ethers.parseEther("750000");
   const SEQToken = await ethers.getContractFactory("SEQToken");
   const seqToken = await SEQToken.deploy(totalSupply, OWNER, ICO);
   await seqToken.waitForDeployment();
