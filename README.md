@@ -21,7 +21,7 @@ This project contains:
 ### SEQToken Contract
 - Standard ERC20 token
 - Initial distribution: 10% to owner, 90% to ICO contract
-- 500,000 total supply
+- 750,000 total supply
 
 ## Setup
 
@@ -60,7 +60,7 @@ The deployment scripts include configurable parameters:
 - Owner address
 - USDT/USDC contract addresses
 - Token pricing for ETH, USDT, and USDC
-- Total supply (500,000 SEQ tokens)
+- Total supply (750,000 SEQ tokens)
 
 ## License
 
