@@ -4,8 +4,11 @@
   "description": "Deployment",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "npm install --legacy-peer-deps"
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.js",
+    "deploy-de": "npx hardhat run scripts/deploy-DE.js",
+    "setup": "bash scripts/setup.sh"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +16,8 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "latest",
     "@openzeppelin/contracts": "^5.4.0",
-    "hardhat": "^3.0.3"
+    "hardhat": "^3.0.3",
+    "solhint": "^6.0.1"
   },
   "type": "module",
   "dependencies": {
