@@ -1,8 +1,42 @@
 
+name: "APIsec Security Scan"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run weekly on Sundays at 2:00 AM UTC
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+
+jobs:
+  apisec-scan:
+    name: APIsec Security Scan
+    runs-on: ubuntu-latest
+    
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
     steps:
-       - name: APIsec scan
-         uses: apisec-inc/apisec-run-scan@025432089674a28ba8fb55f8ab06c10215e772ea
-         with:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create sarif-output directory
+        run: |
+          mkdir -p sarif-output/apisec
+      
+      - name: Set up timestamp for unique IDs
+        id: timestamp
+        run: |
+          echo "timestamp=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+      
+      - name: APIsec scan
+        uses: apisec-inc/apisec-run-scan@025432089674a28ba8fb55f8ab06c10215e772ea
+        with:
           # The APIsec username with which the scans will be executed
           apisec-username: ${{ secrets.apisec_username }}
           # The Password of the APIsec user with which the scans will be executed
@@ -10,8 +44,33 @@
           # The name of the project for security scan
           apisec-project: "VAmPI"
           # The name of the sarif format result file The file is written only if this property is provided.
-          sarif-result-file: "apisec-results.sarif"
-       - name: Import results
-         uses: github/codeql-action/upload-sarif@v3
-         with:
-          sarif_file: ./apisec-results.sarif
+          sarif-result-file: "sarif-output/apisec/apisec-${{ steps.timestamp.outputs.timestamp }}.sarif"
+      
+      - name: Add unique automation ID to SARIF
+        if: success()
+        run: |
+          timestamp="${{ steps.timestamp.outputs.timestamp }}"
+          sarif_file="sarif-output/apisec/apisec-${timestamp}.sarif"
+          
+          if [ -f "$sarif_file" ]; then
+            # Add unique automation ID using jq if available
+            if command -v jq >/dev/null 2>&1; then
+              temp_file="/tmp/apisec-temp.sarif"
+              jq --arg id "apisec-vampi-$timestamp" '.runs[0].automationDetails.id = $id' "$sarif_file" > "$temp_file"
+              mv "$temp_file" "$sarif_file"
+            fi
+          fi
+      
+      - name: Import results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: sarif-output/apisec/apisec-${{ steps.timestamp.outputs.timestamp }}.sarif
+          category: apisec-vampi
+        continue-on-error: true
+      
+      - name: Archive SARIF files
+        uses: actions/upload-artifact@v4
+        with:
+          name: apisec-sarif-results-${{ steps.timestamp.outputs.timestamp }}
+          path: sarif-output/apisec/
+          retention-days: 30

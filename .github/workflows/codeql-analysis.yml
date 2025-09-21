@@ -21,6 +21,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create sarif-output directory
+        run: |
+          mkdir -p sarif-output/codeql
+
+      - name: Set up timestamp for unique IDs
+        id: timestamp
+        run: |
+          echo "timestamp=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -47,20 +56,49 @@ jobs:
 
       - name: Analyze Java database
         run: |
+          timestamp="${{ steps.timestamp.outputs.timestamp }}"
+          output_file="sarif-output/codeql/java-${timestamp}.sarif"
+          
           codeql database analyze codeql-dbs/java java-code-scanning.qls \
-            --format=sarif-latest --sarif-category=java --output=java-results.sarif
+            --format=sarif-latest --sarif-category=java --output="$output_file"
+          
+          # Add unique automation ID using jq if available
+          if command -v jq >/dev/null 2>&1; then
+            temp_file="/tmp/java-temp.sarif"
+            jq --arg id "codeql-java-$timestamp" '.runs[0].automationDetails.id = $id' "$output_file" > "$temp_file"
+            mv "$temp_file" "$output_file"
+          fi
 
       - name: Analyze Python database
         run: |
+          timestamp="${{ steps.timestamp.outputs.timestamp }}"
+          output_file="sarif-output/codeql/python-${timestamp}.sarif"
+          
           codeql database analyze codeql-dbs/python python-code-scanning.qls \
-            --format=sarif-latest --sarif-category=python --output=python-results.sarif
+            --format=sarif-latest --sarif-category=python --output="$output_file"
+          
+          # Add unique automation ID using jq if available
+          if command -v jq >/dev/null 2>&1; then
+            temp_file="/tmp/python-temp.sarif"
+            jq --arg id "codeql-python-$timestamp" '.runs[0].automationDetails.id = $id' "$output_file" > "$temp_file"
+            mv "$temp_file" "$output_file"
+          fi
 
       - name: Upload Java SARIF results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: java-results.sarif
+          sarif_file: sarif-output/codeql/java-${{ steps.timestamp.outputs.timestamp }}.sarif
+          category: codeql-java
 
       - name: Upload Python SARIF results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: python-results.sarif
+          sarif_file: sarif-output/codeql/python-${{ steps.timestamp.outputs.timestamp }}.sarif
+          category: codeql-python
+
+      - name: Archive SARIF files
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-sarif-results-${{ steps.timestamp.outputs.timestamp }}
+          path: sarif-output/codeql/
+          retention-days: 30

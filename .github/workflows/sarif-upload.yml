@@ -1,0 +1,154 @@
+name: "Automated SARIF Upload"
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    # Run daily at 6:00 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  sarif-upload:
+    name: Automated SARIF File Upload
+    runs-on: ubuntu-latest
+    
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create sarif-output directory
+        run: |
+          mkdir -p sarif-output/{codeql,apisec,other}
+      
+      - name: Set up timestamp
+        id: timestamp
+        run: |
+          echo "timestamp=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+      
+      - name: Run CodeQL Analysis
+        if: success()
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+          
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+      
+      - name: Compile contracts (CodeQL build step)
+        run: npx hardhat compile
+        continue-on-error: true
+      
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "javascript"
+          output: sarif-output/codeql
+          upload: false
+      
+      - name: Process and Upload SARIF Files
+        run: |
+          timestamp="${{ steps.timestamp.outputs.timestamp }}"
+          
+          # Find and process all SARIF files
+          find sarif-output -name "*.sarif" -type f | while read -r sarif_file; do
+            if [ -f "$sarif_file" ]; then
+              echo "Processing SARIF file: $sarif_file"
+              
+              # Extract directory name for categorization
+              dir_name=$(basename $(dirname "$sarif_file"))
+              file_name=$(basename "$sarif_file" .sarif)
+              
+              # Generate unique automation ID
+              automation_id="${dir_name}-${file_name}-${timestamp}"
+              
+              # Create a temporary file with updated automation details
+              temp_file="/tmp/$(basename "$sarif_file")"
+              
+              # Add runAutomationDetails.id using jq if available, otherwise use sed
+              if command -v jq >/dev/null 2>&1; then
+                jq --arg id "$automation_id" '.runs[0].automationDetails.id = $id' "$sarif_file" > "$temp_file"
+              else
+                # Fallback: simple sed replacement (basic approach)
+                cp "$sarif_file" "$temp_file"
+                sed -i 's/"automationDetails": {/"automationDetails": {"id": "'$automation_id'",/' "$temp_file" 2>/dev/null || true
+              fi
+              
+              # Upload the SARIF file with unique category
+              echo "Uploading SARIF file with automation ID: $automation_id"
+              
+              # Use GitHub CLI to upload if available, otherwise use upload-sarif action
+              if command -v gh >/dev/null 2>&1; then
+                gh api \
+                  --method POST \
+                  -H "Accept: application/vnd.github+json" \
+                  -H "X-GitHub-Api-Version: 2022-11-28" \
+                  /repos/${{ github.repository }}/code-scanning/sarifs \
+                  -f sarif=@"$temp_file" \
+                  -f ref=${{ github.ref }} \
+                  -f commit_sha=${{ github.sha }} \
+                  || echo "Failed to upload $sarif_file via GitHub CLI"
+              else
+                echo "GitHub CLI not available, using upload-sarif action"
+              fi
+              
+              # Clean up temp file
+              rm -f "$temp_file"
+            fi
+          done
+      
+      - name: Upload SARIF files using upload-sarif action
+        if: always()
+        run: |
+          # Alternative upload method using the upload-sarif action
+          find sarif-output -name "*.sarif" -type f | while read -r sarif_file; do
+            if [ -f "$sarif_file" ]; then
+              echo "Uploading $sarif_file using upload-sarif action"
+              
+              # Extract category from path
+              category=$(basename $(dirname "$sarif_file"))
+              
+              # Upload using the GitHub action
+              echo "sarif_file=$sarif_file" >> $GITHUB_ENV
+              echo "category=$category" >> $GITHUB_ENV
+            fi
+          done
+      
+      - name: Upload SARIF Results
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: sarif-output/
+          category: automated-scan
+        continue-on-error: true
+      
+      - name: Summary Report
+        if: always()
+        run: |
+          echo "## SARIF Upload Summary" >> $GITHUB_STEP_SUMMARY
+          echo "Timestamp: ${{ steps.timestamp.outputs.timestamp }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          sarif_count=$(find sarif-output -name "*.sarif" -type f | wc -l)
+          echo "Total SARIF files processed: $sarif_count" >> $GITHUB_STEP_SUMMARY
+          
+          if [ $sarif_count -gt 0 ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Processed Files:" >> $GITHUB_STEP_SUMMARY
+            find sarif-output -name "*.sarif" -type f | while read -r file; do
+              echo "- $(basename "$file")" >> $GITHUB_STEP_SUMMARY
+            done
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ No SARIF files found in sarif-output directory" >> $GITHUB_STEP_SUMMARY
+          fi
