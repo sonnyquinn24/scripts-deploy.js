@@ -1,18 +1,17 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  // Replace with your actual owner address
+  // Addresses
   const OWNER_ADDRESS = "0x4B958C04701616A0ffF821E9b2db130983c5f3E4";
-  // USDT and USDC contract addresses (ensure these are correct for your network)
   const USDT_CONTRACT_ADDRESS = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT mainnet
-  const USDC_CONTRACT_ADDRESS = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"; // Example USDC
+  const USDC_CONTRACT_ADDRESS = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"; // Your USDC wallet
 
-  // Prices (customize as needed)
+  // Prices (customize if needed)
   const PRICE_PER_TOKEN_ETH = ethers.parseEther("0.01"); // 0.01 ETH per SEQ
   const PRICE_PER_TOKEN_USDT = 10_000_000; // 10 USDT (6 decimals)
   const PRICE_PER_TOKEN_USDC = 10_000_000; // 10 USDC (6 decimals)
 
-  // 1. Deploy ICO contract first (use a dummy token address initially)
+  // 1. Deploy ICO contract first (dummy token address for now)
   const SEQICOFactory = await ethers.getContractFactory("SEQICO");
   const DUMMY_TOKEN_ADDRESS = "0x0000000000000000000000000000000000000000";
   const seqIcoContract = await SEQICOFactory.deploy(
@@ -28,7 +27,7 @@ async function main() {
   console.log("SEQICO deployed to:", icoContractAddress);
 
   // 2. Deploy SEQToken with 10% to owner, 90% to ICO contract
-  const TOTAL_SUPPLY = ethers.parseEther("500000"); // 500,000 SEQ
+  const TOTAL_SUPPLY = ethers.parseEther("500000");
   const SEQTokenFactory = await ethers.getContractFactory("SEQToken");
   const seqTokenContract = await SEQTokenFactory.deploy(TOTAL_SUPPLY, OWNER_ADDRESS, icoContractAddress);
   await seqTokenContract.waitForDeployment();
